@@ -97,59 +97,57 @@ def home():
         st.error("Please enter your query.")
         st.stop()
 
-    # Generate content and display the response
-    if st.button("Ask Gemini"):
 
-        # generation_config = json.loads(generation_config)
-        safety_settings = json.loads(safety_settings)
-        stream = False
-        for content in contents:
-            for n, part in enumerate(content['parts']):
-                if image:=part.get('image', None):
-                    if uploaded_file := image.get('uploaded_file', None):
-                        data = uploaded_file.read()
-                        mime_type = uploaded_file.type
-                    elif image_url := image.get('image_url', None):
-                        try:
-                            response = requests.get(image_url)
-                            response.raise_for_status()  # Raise an HTTPError for bad responses
+    # generation_config = json.loads(generation_config)
+    safety_settings = json.loads(safety_settings)
+    stream = False
+    for content in contents:
+        for n, part in enumerate(content['parts']):
+            if image:=part.get('image', None):
+                if uploaded_file := image.get('uploaded_file', None):
+                    data = uploaded_file.read()
+                    mime_type = uploaded_file.type
+                elif image_url := image.get('image_url', None):
+                    try:
+                        response = requests.get(image_url)
+                        response.raise_for_status()  # Raise an HTTPError for bad responses
 
-                            data = response.content
-                            mime_type = response.headers['content-type']
+                        data = response.content
+                        mime_type = response.headers['content-type']
 
-                            # Continue processing with the image data
+                        # Continue processing with the image data
 
-                        except requests.exceptions.HTTPError as http_err:
-                            st.write(f"HTTP error occurred while fetching the image: {http_err}")
-                        except requests.exceptions.RequestException as req_err:
-                            st.write(f"An error occurred while fetching the image: {req_err}")
-                        except Exception as e:
-                            st.write(f"An unexpected error occurred: {str(e)}")
-                    else:
-                        raise ValueError('Either uploaded_file or image_url must be provided.')
+                    except requests.exceptions.HTTPError as http_err:
+                        st.write(f"HTTP error occurred while fetching the image: {http_err}")
+                    except requests.exceptions.RequestException as req_err:
+                        st.write(f"An error occurred while fetching the image: {req_err}")
+                    except Exception as e:
+                        st.write(f"An unexpected error occurred: {str(e)}")
+                else:
+                    raise ValueError('Either uploaded_file or image_url must be provided.')
+        
+                if mime_type is None:
+                    # Guess!
+                    mime_type = 'image/png'
+
+                blob = {'data': data, 'mime_type': mime_type}
+                content['parts'][n] = blob
+    st.image(data)
+    gemini = genai.GenerativeModel(model_name=model)
+
+    response = gemini.generate_content(
+        contents,
+        generation_config=generation_config,
+        safety_settings=safety_settings,
+        stream=False)
+    st.subheader("Gemini:")
+    data_str = str(response.candidates[0])
             
-                    if mime_type is None:
-                        # Guess!
-                        mime_type = 'image/png'
-
-                    blob = {'data': data, 'mime_type': mime_type}
-                    content['parts'][n] = blob
-        st.image(data)
-        gemini = genai.GenerativeModel(model_name=model)
-
-        response = gemini.generate_content(
-            contents,
-            generation_config=generation_config,
-            safety_settings=safety_settings,
-            stream=False)
-        st.subheader("Gemini:")
-        data_str = str(response.candidates[0])
-                
-        # Use regular expressions to extract the text part
-        match = re.search(r'text: "(.*?)"', data_str)
-        if match:
-            extracted_text = match.group(1)
-            st.write(extracted_text)
+    # Use regular expressions to extract the text part
+    match = re.search(r'text: "(.*?)"', data_str)
+    if match:
+        extracted_text = match.group(1)
+        st.write(extracted_text)
    
 # Run the Streamlit app
 if __name__ == "__main__":
