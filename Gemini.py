@@ -14,26 +14,53 @@ df = pd.DataFrame(data)
 # Page Title
 st.title("Google's Gemini Model Guide 🚀🤖")
 
-# Introduction
-st.header("Introduction to Google's Gemini Model")
-st.sidebar.markdown("[Why Gemini?](#why-gemini)")
-
+# Introduction to Google Gemini
+st.header("Introduction to Google Gemini")
 st.write("""
-Welcome to the forefront of cutting-edge AI with Google's Gemini model! 🚀🤖 
-In this comprehensive guide, we'll dive deep into the intricacies of leveraging the power of GenerativeAI through Gemini. From seamless installation steps to fine-tuning configurations, and exploring the myriad benefits, this guide is your key to unlocking the full potential of this groundbreaking model.
+Google Gemini is a multimodal large language model (LLM) capable of understanding different types of information, including text, audio, images, and video. It consists of Gemini Ultra, Gemini Pro, and Gemini Nano. Announced on December 6, 2023, Google positions Gemini as a strong competitor to OpenAI's GPT-4, claiming it to be their most capable and general-purpose AI model.
+
+Gemini Pro Availability
+""")
+st.write("""
+Google has made Gemini Pro, a language model designed for developers, available worldwide. Developers can access Google AI Studio, a free tool enabling them to explore Gemini's capabilities and integrate it into their applications.
 """)
 
-# Why Gemini?
-st.header("🌐 Why Gemini?")
-st.sidebar.markdown("[Installation](#installation)")
-
+# Additional Language Support
 st.write("""
-Gemini stands at the intersection of innovation and AI prowess. Its capabilities extend beyond the ordinary, promising a new era of generative content creation that's both powerful and dynamic.
+Additional Language Support
 """)
+st.write("""
+Gemini now supports six additional languages: Hindi, Japanese, Korean, Portuguese, Chinese, and Spanish. Google plans to expand language support to more languages in early 2024.
+""")
+
+# Web Application for Gemini API
+st.header("Web Application for Gemini API")
+st.write("""
+To use Gemini's capabilities in your web application, follow these steps:
+
+1. **Visit Google AI Studio:**
+   Go to [Google AI Studio](https://ai.google.dev/).
+
+2. **Get API Key:**
+   Click on "Get API Key" and create your API key.
+
+3. **Copy API Key:**
+   Copy the generated API key.
+
+4. **Paste in Web Application:**
+   In your web application, there should be an input field to paste your API key. Paste the copied API key into this field.
+
+5. **Generate Text and Image Descriptions:**
+   Once the API key is validated, you can use the Gemini API to generate text and get descriptions for images within your web application.
+""")
+
+# Gemini Model Capabilities Table
+st.header("Gemini Model Capabilities")
 st.table(df)
+
 # Learn More section
-st.header("📚 Learn More")
+st.header("Learn More")
 # Add a clickable link
 st.markdown("""
-For a deeper understanding and additional insights, check out accompanying [blog post](https://deepmind.google/technologies/gemini/#introduction) dedicated to Google's Gemini Model. Let's embark on this exciting journey together! 🌟🔍.
+For a deeper understanding and additional insights, check out the accompanying [blog post](https://deepmind.google/technologies/gemini/#introduction) dedicated to Google's Gemini Model. Let's embark on this exciting journey together! 🌟🔍.
 """, unsafe_allow_html=True)
