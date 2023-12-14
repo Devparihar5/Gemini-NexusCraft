@@ -91,24 +91,7 @@ def home():
         "max_output_tokens": max_output_tokens,
     }
 
-    safety_settings = [
-        {
-            "category": "HARM_CATEGORY_HARASSMENT",
-            "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-        },
-        {
-            "category": "HARM_CATEGORY_HATE_SPEECH",
-            "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-        },
-        {
-            "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-            "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-        },
-        {
-            "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-            "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-        }
-        ]
+    safety_settings = "{}"
     # Check if the query is provided
     if not prompt:
         st.error("Please enter your query.")
@@ -118,7 +101,7 @@ def home():
     if st.button("Ask Gemini"):
 
         # generation_config = json.loads(generation_config)
-        # safety_settings = json.loads(safety_settings)
+        safety_settings = json.loads(safety_settings)
         stream = False
         for content in contents:
             for n, part in enumerate(content['parts']):
@@ -126,10 +109,22 @@ def home():
                     if uploaded_file := image.get('uploaded_file', None):
                         data = uploaded_file.read()
                         mime_type = uploaded_file.type
-                    elif image_url:=image.get('image_url', None):
-                        response = requests.get(image_url)
-                        data = response.content
-                        mime_type = response.headers['content-type']
+                    elif image_url := image.get('image_url', None):
+                        try:
+                            response = requests.get(image_url)
+                            response.raise_for_status()  # Raise an HTTPError for bad responses
+
+                            data = response.content
+                            mime_type = response.headers['content-type']
+
+                            # Continue processing with the image data
+
+                        except requests.exceptions.HTTPError as http_err:
+                            st.write(f"HTTP error occurred while fetching the image: {http_err}")
+                        except requests.exceptions.RequestException as req_err:
+                            st.write(f"An error occurred while fetching the image: {req_err}")
+                        except Exception as e:
+                            st.write(f"An unexpected error occurred: {str(e)}")
                     else:
                         raise ValueError('Either uploaded_file or image_url must be provided.')
             
@@ -147,9 +142,7 @@ def home():
             generation_config=generation_config,
             safety_settings=safety_settings,
             stream=False)
-        st.subheader("Gemini Model Response:")
-        # st.write(response.candidates)
-        # st.write(response.candidates[0])
+        st.subheader("Gemini:")
         data_str = str(response.candidates[0])
                 
         # Use regular expressions to extract the text part

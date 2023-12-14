@@ -1,5 +1,6 @@
 import google.generativeai as genai
 import streamlit as st
+import json
 
 # Function to initialize session state
 def initialize_session_state():
@@ -30,7 +31,7 @@ def text_page():
     temperature = st.sidebar.slider("Temperature", 0.0, 1.0, 0.9, 0.1)
     top_p = st.sidebar.number_input("Top P", 0.0, 1.0, 1.0, 0.1)
     top_k = st.sidebar.number_input("Top K", 1, 100, 1)
-    max_output_tokens = st.sidebar.number_input("Max Output Tokens", 1, 5000, 2048)
+    max_output_tokens = st.sidebar.number_input("Max Output Tokens", 1, 10000, 2048)
 
     # Set up the model
     generation_config = {
@@ -41,24 +42,9 @@ def text_page():
     }
 
 
-    safety_settings = [
-      {
-        "category": "HARM_CATEGORY_HARASSMENT",
-        "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-      },
-      {
-        "category": "HARM_CATEGORY_HATE_SPEECH",
-        "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-      },
-      {
-        "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-        "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-      },
-      {
-        "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-        "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-      }
-    ]
+    safety_settings = "{}"
+    safety_settings = json.loads(safety_settings)
+        
     prompt = st.text_input("Enter your Query:")
     # Check if the query is provided
     if not prompt:
@@ -72,10 +58,18 @@ def text_page():
                 
 
         prompt_parts = [prompt]
+        
+        try:
+            response = gemini.generate_content(prompt_parts)
+            st.subheader("Gemini:")
+            if response.text:
+                
+                st.write(response.text)
+            else:
+                st.write("No output from Gemini.")
+        except Exception as e:
+            st.write(f"An error occurred: {str(e)}")
 
-        response = gemini.generate_content(prompt_parts)
-        # st.write(response.text)
-        st.write(response.text)
 
 # Run the Streamlit app
 if __name__ == "__main__":
