@@ -1,0 +1,23 @@
+# .gitignore
+
+# Python
+__pycache__/
+
+# Virtual Environment
+venv/
+gem/
+
+# IDE files
+.idea/
+.vscode/
+
+# Compiled Python files
+*.pyc
+*.pyo
+*.pyd
+
+# Python cache
+*.pyc
+
+# Jupyter Notebook
+.ipynb_checkpoints/
