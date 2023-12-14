@@ -16,8 +16,8 @@ This project consists of two Streamlit applications that leverage the capabiliti
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/gemini-streamlit-app.git
-cd gemini-streamlit-app
+git clone https://github.com/Devparihar5/Gemini-NexusCraft.git
+cd Gemini-NexusCraft
 ```
 
 2. Install the required dependencies:
@@ -33,20 +33,13 @@ pip install -r requirements.txt
 To run the Streamlit app for text generation, execute the following command:
 
 ```bash
-streamlit run text_app.py
+streamlit run Gemini.py
 ```
 
 This app allows you to interact with the Gemini model by providing a text prompt. It also provides configuration options such as temperature, top_p, top_k, and max_output_tokens.
 
 ### Text and Image Generation
 
-To run the Streamlit app for text and image generation, execute the following command:
-
-```bash
-streamlit run image_app.py
-```
-
-This app extends the functionality to include image input along with text prompts. You can either provide an image URL or upload an image file. The app also includes configuration options for the Gemini model.
 
 ## Configuration
 
