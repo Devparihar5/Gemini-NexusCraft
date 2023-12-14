@@ -51,24 +51,24 @@ def text_page():
         st.error("Please enter your query.")
         st.stop()
 
-    if st.button("Ask Gemini"):
-        gemini = genai.GenerativeModel(model_name="gemini-pro",
-                                      generation_config=generation_config,
-                                      safety_settings=safety_settings)
+
+    gemini = genai.GenerativeModel(model_name="gemini-pro",
+                                  generation_config=generation_config,
+                                  safety_settings=safety_settings)
                 
 
-        prompt_parts = [prompt]
-        
-        try:
-            response = gemini.generate_content(prompt_parts)
-            st.subheader("Gemini:")
-            if response.text:
-                
-                st.write(response.text)
-            else:
-                st.write("No output from Gemini.")
-        except Exception as e:
-            st.write(f"An error occurred: {str(e)}")
+    prompt_parts = [prompt]
+    
+    try:
+        response = gemini.generate_content(prompt_parts)
+        st.subheader("Gemini:")
+        if response.text:
+            
+            st.write(response.text)
+        else:
+            st.write("No output from Gemini.")
+    except Exception as e:
+        st.write(f"An error occurred: {str(e)}")
 
 
 # Run the Streamlit app
