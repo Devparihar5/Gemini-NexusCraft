@@ -27,19 +27,15 @@ pip install -r requirements.txt
 ```
 
 ## Usage
-
-### Text Generation
-
 To run the Streamlit app for text generation, execute the following command:
 
 ```bash
 streamlit run Gemini.py
 ```
-
-This app allows you to interact with the Gemini model by providing a text prompt. It also provides configuration options such as temperature, top_p, top_k, and max_output_tokens.
-
+### Text Generation
+![Text Generation](https://github.com/Devparihar5/Gemini-NexusCraft/blob/main/images/text-example.png)
 ### Text and Image Generation
-
+![Text and Image Generation](https://github.com/Devparihar5/Gemini-NexusCraft/blob/main/images/image-example.png)
 
 ## Configuration
 
